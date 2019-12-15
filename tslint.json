@@ -38,7 +38,7 @@
     "no-console": [
       true,
       "debug",
-      "log",
+      // "log",
       "time",
       "timeEnd",
       "trace"
@@ -47,7 +47,7 @@
     "no-debugger": true,
     "no-duplicate-super": true,
     "no-empty": false,
-    "no-empty-interface": true,
+    "no-empty-interface": false,
     "no-eval": true,
     "no-misused-new": true,
     "no-non-null-assertion": true,
@@ -68,6 +68,10 @@
       "check-whitespace"
     ],
     "prefer-const": true,
+    "object-literal-key-quotes": [
+      true,
+      "as-needed"
+    ],
     "quotemark": [
       true,
       "single"

@@ -2,21 +2,31 @@ import { NbMenuItem } from '@nebular/theme';
 
 export const MENU_ITEMS: NbMenuItem[] = [
   {
-    title: 'E-commerce',
-    icon: 'shopping-cart-outline',
+    title: 'Dashboard',
+    icon: {icon: 'columns', pack: 'fa'},
     link: '/pages/dashboard',
     home: true,
   },
-  {
+/*  {
     title: 'IoT Dashboard',
     icon: 'home-outline',
     link: '/pages/iot-dashboard',
-  },
+  },*/
   {
     title: 'FEATURES',
     group: true,
   },
   {
+    title: 'Articles',
+    icon: {icon: 'newspaper', pack: 'fa'},
+    children: [
+      {
+        title: 'Create new',
+        link: '/pages/editors/tinymce',
+      },
+    ],
+  },
+/*  {
     title: 'Layout',
     icon: 'layout-outline',
     children: [
@@ -243,5 +253,5 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/auth/reset-password',
       },
     ],
-  },
+  },*/
 ];

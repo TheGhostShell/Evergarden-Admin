@@ -1,17 +1,10 @@
 import { Component } from '@angular/core';
+import {NbComponentStatus} from '@nebular/theme';
 
 @Component({
   selector: 'ngx-tiny-mce-page',
-  template: `
-    <nb-card>
-      <nb-card-header>
-        Tiny MCE
-      </nb-card-header>
-      <nb-card-body>
-        <ngx-tiny-mce></ngx-tiny-mce>
-      </nb-card-body>
-    </nb-card>
-  `,
+  templateUrl: 'tiny-mce.component.html',
 })
 export class TinyMCEComponent {
+  private primary: NbComponentStatus = 'primary';
 }
