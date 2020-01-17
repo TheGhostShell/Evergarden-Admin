@@ -5,9 +5,36 @@ export class User {
   private _lastName: string;
   private _email: string;
   private _pseudo: string;
-  private _avatar: string;
+  private _avatarUrl: string;
   private _token: string;
   private _picture: string;
+  private _isAvatarUpdated: boolean; // TODO create a specific Avatar object
+
+
+  public copy(): User {
+    const userCopy = new User();
+
+    userCopy.id = this.id;
+    userCopy.name = this.name;
+    userCopy.firstName = this.firstName;
+    userCopy.lastName = this.lastName;
+    userCopy.email = this.email;
+    userCopy.pseudo = this.pseudo;
+    userCopy.avatarUrl = this.avatarUrl;
+    userCopy.token = this.token;
+    userCopy.picture = this.picture;
+    userCopy.isAvatarUpdated = this.isAvatarUpdated;
+
+    return userCopy;
+  }
+
+  get isAvatarUpdated(): boolean {
+    return this._isAvatarUpdated;
+  }
+
+  set isAvatarUpdated(value: boolean) {
+    this._isAvatarUpdated = value;
+  }
 
   get id(): string {
     return this._id;
@@ -57,12 +84,12 @@ export class User {
     this._pseudo = value;
   }
 
-  get avatar(): string {
-    return this._avatar;
+  get avatarUrl(): string {
+    return this._avatarUrl;
   }
 
-  set avatar(value: string) {
-    this._avatar = value;
+  set avatarUrl(value: string) {
+    this._avatarUrl = value;
   }
 
   get token(): string {

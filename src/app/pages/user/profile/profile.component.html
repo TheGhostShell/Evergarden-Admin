@@ -1,0 +1,121 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <!--
+            <nb-card>
+              <nb-card-header>
+                About me
+              </nb-card-header>
+              <nb-card-body>
+                <img src="https://images.unsplash.com/photo-1568364419972-92c33702c48f?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80" class="img-thumbnail rounded mx-auto d-block" style="width: 20%">
+                &lt;!&ndash;<nb-user size="small"
+                         name="John Makelan"
+                         picture="https://images.unsplash.com/photo-1568364419972-92c33702c48f?ixlib=rb-1.2.1&auto=format&fit=crop&w=2734&q=80"
+                         onlyPicture>
+                </nb-user>&ndash;&gt;
+              </nb-card-body>
+            </nb-card>
+      -->
+      <nb-reveal-card [revealed]="editPicture">
+        <nb-card-front>
+          <nb-card size="medium">
+            <nb-card-header>About Me</nb-card-header>
+            <nb-card-body>
+              <img
+                [src]="'http://localhost:8080' + user.avatarUrl"
+                class="img-thumbnail rounded mx-auto d-block image" style="width: 20%" (click)="edit()">
+            </nb-card-body>
+          </nb-card>
+        </nb-card-front>
+        <nb-card-back>
+          <nb-card accent="primary" size="medium">
+            <nb-card-header>Edit Profile Picture</nb-card-header>
+            <nb-card-body>
+              <div>
+                <img [src]="previewUrl" class="img-thumbnail rounded mx-auto d-block" style="width: 20%"
+                     (click)="edit()"
+                     id="avatar-preview">
+                <input nbInput status="primary" type="file" id="avatar" name="avatar" accept="image/png, image/jpeg"
+                       (change)="preview($event.target.files)">
+                <button
+                  type="submit"
+                  nbButton
+                  [disabled]="!this.user.isAvatarUpdated"
+                  status="primary"
+                  id="btn-change-picture"
+                  (click)="changeAvatar()">Change
+                </button>
+
+              </div>
+            </nb-card-body>
+          </nb-card>
+        </nb-card-back>
+      </nb-reveal-card>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <nb-card class="inline-form-card">
+        <nb-card-header>Change Email</nb-card-header>
+        <nb-card-body>
+          <form class="form-inline">
+            <input type="text" nbInput fullWidth placeholder="Email">
+            <button type="submit" nbButton status="primary">Change</button>
+          </form>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <nb-card>
+        <nb-card-header>Change Password</nb-card-header>
+        <nb-card-body>
+          <form>
+            <div class="form-group row">
+              <label for="currentPassword" class="label col-sm-3 col-form-label">Current Password</label>
+              <div class="col-sm-9">
+                <input type="password" nbInput fullWidth id="currentPassword" placeholder="Password">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="newPassword" class="label col-sm-3 col-form-label">New Password</label>
+              <div class="col-sm-9">
+                <input type="password" nbInput fullWidth id="newPassword" placeholder="Password">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="confirmPassword" class="label col-sm-3 col-form-label">Confirm Password</label>
+              <div class="col-sm-9">
+                <input type="password" nbInput fullWidth id="confirmPassword" placeholder="Password">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="offset-sm-3 col-sm-9">
+                <button type="submit" nbButton status="primary">Change</button>
+              </div>
+            </div>
+
+          </form>
+        </nb-card-body>
+      </nb-card>
+    </div>
+
+    <div class="col-md-6">
+      <nb-card>
+        <nb-card-header>Role</nb-card-header>
+        <nb-card-body>
+          <div class="demo-items">
+            <nb-checkbox>Checkbox 1</nb-checkbox>
+            <nb-checkbox [value]="true">Checkbox 2</nb-checkbox>
+          </div>
+        </nb-card-body>
+      </nb-card>
+
+    </div>
+  </div>
+
+</div>

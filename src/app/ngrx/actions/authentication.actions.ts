@@ -1,5 +1,5 @@
 import {Action} from '@ngrx/store';
-import {UserCredential} from '../domain/model/user-credential';
+import {UserCredentialInterface} from '../../domain/model/user-credential-interface';
 
 export enum AuthenticationActionTypes {
   AUTHENTICATION = '[Authentication] Load Authentications',
@@ -8,7 +8,7 @@ export enum AuthenticationActionTypes {
 export class LoadAuthentications implements Action {
   readonly type = AuthenticationActionTypes.AUTHENTICATION;
 
-  constructor(public payload: UserCredential) {}
+  constructor(public payload: UserCredentialInterface) {}
 }
 
 

@@ -1,9 +1,10 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 
-import { TablesComponent } from './tables.component';
-import { SmartTableComponent } from './smart-table/smart-table.component';
-import { TreeGridComponent } from './tree-grid/tree-grid.component';
+import {TablesComponent} from './tables.component';
+import {SmartTableComponent} from './smart-table/smart-table.component';
+import {TreeGridComponent} from './tree-grid/tree-grid.component';
+import {ArticleListComponent} from './article-list/article-list.component';
 
 const routes: Routes = [{
   path: '',
@@ -17,6 +18,10 @@ const routes: Routes = [{
       path: 'tree-grid',
       component: TreeGridComponent,
     },
+    {
+      path: 'article-list',
+      component: ArticleListComponent,
+    },
   ],
 }];
 
@@ -24,10 +29,12 @@ const routes: Routes = [{
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TablesRoutingModule { }
+export class TablesRoutingModule {
+}
 
 export const routedComponents = [
   TablesComponent,
   SmartTableComponent,
   TreeGridComponent,
+  ArticleListComponent,
 ];

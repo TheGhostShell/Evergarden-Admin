@@ -24,6 +24,24 @@ export const MENU_ITEMS: NbMenuItem[] = [
         title: 'Create new',
         link: '/pages/editors/tinymce',
       },
+      {
+        title: 'Article List',
+        link: '/pages/tables/article-list',
+      },
+    ],
+  },
+  {
+    title: 'Users',
+    icon: {icon: 'users', pack: 'fa'},
+    children: [
+      {
+        title: 'Add new',
+        link: '/pages/user/add-new',
+      },
+      {
+        title: 'Manage',
+        link: '/pages/user/manage',
+      },
     ],
   },
 /*  {

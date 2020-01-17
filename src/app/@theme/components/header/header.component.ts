@@ -6,10 +6,11 @@ import {LayoutService} from '../../../@core/utils';
 import {map, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {NbAuthJWTToken, NbAuthService} from '@nebular/auth';
-import {Store} from '@ngrx/store';
-import {State} from '../../../reducers';
-import {Login} from '../../../actions/login.actions';
+import {select, Store} from '@ngrx/store';
+import {State} from '../../../ngrx/reducers';
+import {Login} from '../../../ngrx/actions/login.actions';
 import {User} from '../../../domain/model/user';
+import {Token} from '../../../domain/model/token';
 
 @Component({
   selector: 'ngx-header',
@@ -19,7 +20,7 @@ import {User} from '../../../domain/model/user';
 export class HeaderComponent implements OnInit, OnDestroy {
 
   userPictureOnly: boolean = false;
-  user: any;
+  user: User;
   themes = [
     {
       value: 'default',
@@ -43,12 +44,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     {
       title: 'Profile',
       link: '/pages/user/profile',
+      icon: {pack: 'fa', icon: 'user'},
     },
     {
       title: 'Log out',
+      icon: {pack: 'fa', icon: 'sign-out-alt'},
     },
   ];
-  private evergardenUser: User = new User();
+  private token: Token = new Token();
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(private sidebarService: NbSidebarService,
@@ -84,6 +87,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .subscribe(themeName => this.currentTheme = themeName);
 
     this.login();
+    this.store.select(state => state.userKey.user).subscribe(value => this.user = value);
   }
 
   ngOnDestroy() {
@@ -111,10 +115,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService.onTokenChange().subscribe(
       (token: NbAuthJWTToken) => {
         if (token.isValid()) {
-          this.evergardenUser.token = token.getValue();
-          this.evergardenUser.email = token.getPayload().email;
-          this.evergardenUser.id = token.getPayload().id;
-          this.store.dispatch(new Login(this.evergardenUser));
+          this.token.token = token.getValue();
+          this.token.email = token.getPayload().email;
+          this.token.userId = token.getPayload().id;
+          this.store.dispatch(new Login(this.token));
         }
       },
     );

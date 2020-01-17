@@ -1,11 +1,11 @@
 import {TestBed} from '@angular/core/testing';
 import {provideMockActions} from '@ngrx/effects/testing';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 
 import {LoadUserEffects} from './load-user.effects';
 
 describe('LoadUserEffects', () => {
-  let actions$: Observable<any>;
+  const actions$: Observable<any> = of();
   let effects: LoadUserEffects;
 
   beforeEach(() => {

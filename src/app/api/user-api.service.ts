@@ -3,6 +3,9 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../domain/model/user';
 import {Observable, of} from 'rxjs';
 import {flatMap, map} from 'rxjs/operators';
+import {select, Store} from '@ngrx/store';
+import {State} from '../ngrx/reducers';
+import {Token} from '../domain/model/token';
 
 export interface UserResponse {
   email: string;
@@ -11,6 +14,7 @@ export interface UserResponse {
   firstname: string;
   lastname: string;
   activate: boolean;
+  avatarUrl: string;
   roles: Array<string>;
 }
 
@@ -20,14 +24,29 @@ export interface UserResponse {
 })
 export class UserApiService {
 
-  constructor(private http: HttpClient) {
+  private token: Token;
+
+  constructor(private http: HttpClient, private store: Store<State>) {
   }
 
-  fetchUser(user: User): Observable<User> {
-    const url: string = '/api/v1/private/user/' + user.id;
+  addAvatar(avatar: FileList): Observable<any> {
+    this.store.pipe(select(state => state.loginKey.token)).subscribe(value => this.token = value);
+    const avatarFilePart: FormData = new FormData();
+    avatarFilePart.append('avatar', avatar[0], avatar[0].name);
+    const url: string = '/api/v1/private/user/avatar';
+    const option = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + this.token.token,
+      }),
+    };
+    return this.http.post(url, avatarFilePart, option);
+  }
+
+  fetchUser(token: Token): Observable<User> {
+    const url: string = '/api/v1/private/user/' + token.userId;
     const options = {
       headers: new HttpHeaders({
-        Authorization: 'Bearer ' + user.token,
+        Authorization: 'Bearer ' + token.token,
       }),
     };
     return this.http.get(url, options)
@@ -39,7 +58,8 @@ export class UserApiService {
           userMapped.firstName = response.firstname;
           userMapped.lastName = response.lastname;
           userMapped.pseudo = response.pseudo;
-          userMapped.token = user.token;
+          userMapped.token = token.token;
+          userMapped.avatarUrl = response.avatarUrl;
           userMapped.name = response.firstname + ' ' + response.lastname;
           return of(userMapped);
         }),

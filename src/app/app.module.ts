@@ -21,11 +21,12 @@ import {
   NbWindowModule,
 } from '@nebular/theme';
 import {StoreModule} from '@ngrx/store';
-import {metaReducers, reducers} from './reducers';
+import {metaReducers, reducers} from './ngrx/reducers';
 import {EffectsModule} from '@ngrx/effects';
 import {AppEffects} from './app.effects';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
-import { LoadUserEffects } from './effects/load-user.effects';
+import {LoadUserEffects} from './ngrx/effects/load-user.effects';
+import {UpdateAvatarEffects} from './ngrx/effects/update-avatar.effects';
 
 @NgModule({
   declarations: [AppComponent],
@@ -59,7 +60,7 @@ import { LoadUserEffects } from './effects/load-user.effects';
       name: 'Evergarden Admin Dashboard',
     }),
     EffectsModule.forRoot([AppEffects]),
-    EffectsModule.forFeature([LoadUserEffects]),
+    EffectsModule.forFeature([LoadUserEffects, UpdateAvatarEffects]),
   ],
   bootstrap: [AppComponent],
 })
