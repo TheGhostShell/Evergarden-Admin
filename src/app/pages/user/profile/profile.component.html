@@ -60,8 +60,8 @@
         <nb-card-header>Change Email</nb-card-header>
         <nb-card-body>
           <form class="form-inline">
-            <input type="text" nbInput fullWidth placeholder="Email">
-            <button type="submit" nbButton status="primary">Change</button>
+            <input type="text" nbInput fullWidth placeholder="Email" [(ngModel)]="email" name="email">
+            <button type="submit" nbButton status="primary" (click)="changeEmail()">Change</button>
           </form>
         </nb-card-body>
       </nb-card>

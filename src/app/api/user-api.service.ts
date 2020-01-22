@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../domain/model/user';
 import {Observable, of} from 'rxjs';
-import {flatMap, map} from 'rxjs/operators';
+import {flatMap} from 'rxjs/operators';
 import {select, Store} from '@ngrx/store';
 import {State} from '../ngrx/reducers';
 import {Token} from '../domain/model/token';
@@ -40,6 +40,49 @@ export class UserApiService {
       }),
     };
     return this.http.post(url, avatarFilePart, option);
+  }
+
+  // TODO add filter to add token in request automatically
+
+  updateUser(user: User): Observable<User> {
+    const url: string = '/api/v1/private/user';
+    const options = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + user.token,
+      }),
+    };
+    return this.http.put(url, options)
+      .pipe(
+        flatMap((response: UserResponse) => {
+          const userMapped: User = new User();
+          userMapped.id = response.id;
+          userMapped.email = response.email;
+          return of(userMapped);
+        }),
+      );
+  }
+
+  updateUserEmail(user: User): Observable<User> {
+    const url: string = '/api/v1/private/user';
+    const options = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + user.token,
+      }),
+    };
+    const body = {
+      id: user.id,
+      email: user.email,
+    };
+    return this.http.put(url, body, options)
+      .pipe(
+        flatMap((response: UserResponse) => {
+          // TODO maybe better to call fetchUser after updateUser
+          const userMapped: User = new User();
+          userMapped.id = response.id;
+          userMapped.email = response.email;
+          return of(userMapped);
+        }),
+      );
   }
 
   fetchUser(token: Token): Observable<User> {

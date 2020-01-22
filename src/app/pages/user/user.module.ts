@@ -10,6 +10,7 @@ import {
   NbRadioModule,
   NbUserModule,
 } from '@nebular/theme';
+import {FormsModule} from '@angular/forms';
 
 const components = [
   UserComponent,
@@ -17,7 +18,15 @@ const components = [
 ];
 
 @NgModule({
-  imports: [UserRoutingModule, NbCardModule, NbUserModule, NbCheckboxModule, NbInputModule, NbButtonModule, NbRadioModule],
+  imports: [
+    UserRoutingModule,
+    NbCardModule,
+    NbUserModule,
+    NbCheckboxModule,
+    NbInputModule,
+    NbButtonModule,
+    NbRadioModule,
+    FormsModule],
   declarations: [
     ...components,
   ],
