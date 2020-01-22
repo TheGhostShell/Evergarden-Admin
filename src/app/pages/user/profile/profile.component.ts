@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {User} from '../../../domain/model/user';
 import {State} from '../../../ngrx/reducers';
-import {AvatarUpdated, UserUpdated} from '../../../ngrx/actions/user.action';
+import {AvatarUpdated, EmailUpdated, UserUpdated} from '../../../ngrx/actions/user.action';
 
 function prim(boolVal: boolean): boolean {
   if (boolVal) {
@@ -20,6 +20,7 @@ function prim(boolVal: boolean): boolean {
 export class ProfileComponent implements OnInit {
 
   private user: User = new User();
+  private email: string = '';
   private editPicture: boolean = false;
   private avatarFile: FileList;
   // TODO need to add generic placeholder image
@@ -29,7 +30,10 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.store.pipe(select(state => state.userKey.user)).subscribe(value => this.user = value);
+    this.store.pipe(select(state => state.userKey.user)).subscribe(value => {
+      this.user = value.copy();
+      this.email = value.email;
+    });
   }
 
   edit(): void {
@@ -57,5 +61,11 @@ export class ProfileComponent implements OnInit {
 
       reader.readAsDataURL(img[0]);
     }
+  }
+
+  changeEmail() {
+    const user: User = this.user.copy();
+    user.email = this.email;
+    this.store.dispatch(new EmailUpdated(user));
   }
 }

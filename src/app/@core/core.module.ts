@@ -52,6 +52,7 @@ import {StatsProgressBarService} from './mock/stats-progress-bar.service';
 import {VisitorsAnalyticsService} from './mock/visitors-analytics.service';
 import {SecurityCamerasService} from './mock/security-cameras.service';
 import {MockDataModule} from './mock/mock-data.module';
+import {EvergardenAuthStrategy} from '../evergarden/evergarden-auth-strategy';
 
 const socialLinks = [
   {
@@ -99,19 +100,23 @@ export class NbSimpleRoleProvider extends NbRoleProvider {
     return observableOf('guest');
   }
 }
-
+// TODO provide PR for handle redirect on logout #NbAuthService
 export const NB_CORE_PROVIDERS = [
   ...MockDataModule.forRoot().providers,
   ...DATA_SERVICES,
   ...NbAuthModule.forRoot({
     strategies: [
-      NbPasswordAuthStrategy.setup({
+      EvergardenAuthStrategy.setup({
         name: 'email',
         baseEndpoint: '/api/v1',
         login: {
           endpoint: '/login',
           method: 'post',
           requireValidToken: true,
+        },
+        logout: {
+          endpoint: '/private/logout',
+          method: 'post',
         },
         token: {
           class: NbAuthJWTToken,

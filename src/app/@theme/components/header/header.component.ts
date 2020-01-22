@@ -6,11 +6,12 @@ import {LayoutService} from '../../../@core/utils';
 import {map, takeUntil} from 'rxjs/operators';
 import {Subject} from 'rxjs';
 import {NbAuthJWTToken, NbAuthService} from '@nebular/auth';
-import {select, Store} from '@ngrx/store';
+import {Store} from '@ngrx/store';
 import {State} from '../../../ngrx/reducers';
 import {Login} from '../../../ngrx/actions/login.actions';
 import {User} from '../../../domain/model/user';
 import {Token} from '../../../domain/model/token';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'ngx-header',
@@ -61,7 +62,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private layoutService: LayoutService,
               private breakpointService: NbMediaBreakpointsService,
               private authService: NbAuthService,
-              private store: Store<State>) {
+              private store: Store<State>,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -85,6 +87,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
       )
       .subscribe(themeName => this.currentTheme = themeName);
+
+    this.menuService.onItemClick()
+      .subscribe((event) => {
+        if (event.item.title === 'Log out') {
+          this.authService.logout('email')
+            .subscribe(value => this.router.navigate(['auth/login']));
+        }
+      });
 
     this.login();
     this.store.select(state => state.userKey.user).subscribe(value => this.user = value);
@@ -115,10 +125,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.authService.onTokenChange().subscribe(
       (token: NbAuthJWTToken) => {
         if (token.isValid()) {
-          this.token.token = token.getValue();
-          this.token.email = token.getPayload().email;
-          this.token.userId = token.getPayload().id;
-          this.store.dispatch(new Login(this.token));
+          const newToken: Token = new Token();
+          newToken.token = token.getValue();
+          newToken.email = token.getPayload().email;
+          newToken.userId = token.getPayload().id;
+          this.store.dispatch(new Login(newToken));
         }
       },
     );
