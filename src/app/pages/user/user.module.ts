@@ -11,6 +11,7 @@ import {
   NbUserModule,
 } from '@nebular/theme';
 import {FormsModule} from '@angular/forms';
+import {CommonModule} from '@angular/common';
 
 const components = [
   UserComponent,
@@ -18,15 +19,17 @@ const components = [
 ];
 
 @NgModule({
-  imports: [
-    UserRoutingModule,
-    NbCardModule,
-    NbUserModule,
-    NbCheckboxModule,
-    NbInputModule,
-    NbButtonModule,
-    NbRadioModule,
-    FormsModule],
+    imports: [
+        UserRoutingModule,
+        NbCardModule,
+        NbUserModule,
+        NbCheckboxModule,
+        NbInputModule,
+        NbButtonModule,
+        NbRadioModule,
+        FormsModule,
+        CommonModule,
+    ],
   declarations: [
     ...components,
   ],

@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {User} from '../../../domain/model/user';
 import {State} from '../../../ngrx/reducers';
-import {AvatarUpdated, EmailUpdated, UserUpdated} from '../../../ngrx/actions/user.action';
+import {AvatarUpdated, EmailUpdated, PasswordUpdated, UserUpdated} from '../../../ngrx/actions/user.action';
+import {PasswordRequest} from '../../../domain/model/password-request';
 
 function prim(boolVal: boolean): boolean {
   if (boolVal) {
@@ -25,6 +26,9 @@ export class ProfileComponent implements OnInit {
   private avatarFile: FileList;
   // TODO need to add generic placeholder image
   private previewUrl: string = '';
+  private currentPassword: string;
+  private confirmPassword: string;
+  private newPassword: string;
 
   constructor(private store: Store<State>) {
   }
@@ -67,5 +71,10 @@ export class ProfileComponent implements OnInit {
     const user: User = this.user.copy();
     user.email = this.email;
     this.store.dispatch(new EmailUpdated(user));
+  }
+
+  changePassword() {
+    const request = new PasswordRequest(this.currentPassword, this.confirmPassword, this.newPassword);
+    this.store.dispatch(new PasswordUpdated(request));
   }
 }
