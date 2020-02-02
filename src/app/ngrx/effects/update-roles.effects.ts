@@ -9,10 +9,10 @@ import {State} from '../reducers';
 
 
 @Injectable()
-export class UpdateEmailEffects {
-  updateEmail$ = createEffect(() => this.actions$.pipe(
-    ofType(UserActionTypes.EMAIL_UPDATED),
-    flatMap(value => this.userApi.updateUserEmail(value.payload)),
+export class UpdateRolesEffects {
+  updateRoles$ = createEffect(() => this.actions$.pipe(
+    ofType(UserActionTypes.ROLES_UPDATED),
+    flatMap(value => this.userApi.updateUserRoles(value.payload)),
     flatMap(value => this.store.pipe(select(state => state.loginKey.token))),
     flatMap(value => this.userApi.fetchUser(value)),
     map(

@@ -1,3 +1,5 @@
+import {Role} from './role';
+
 export class User {
   private _id: string;
   private _name: string;
@@ -9,7 +11,12 @@ export class User {
   private _token: string;
   private _picture: string;
   private _isAvatarUpdated: boolean; // TODO create a specific Avatar object
+  private _roles: Array<Role>;
 
+
+  constructor() {
+    this.roles = new Array<Role>();
+  }
 
   public copy(): User {
     const userCopy = new User();
@@ -24,8 +31,17 @@ export class User {
     userCopy.token = this.token;
     userCopy.picture = this.picture;
     userCopy.isAvatarUpdated = this.isAvatarUpdated;
+    userCopy.roles = this.roles;
 
     return userCopy;
+  }
+
+  get roles(): Array<Role> {
+    return this._roles;
+  }
+
+  set roles(value: Array<Role>) {
+    this._roles = value;
   }
 
   get isAvatarUpdated(): boolean {

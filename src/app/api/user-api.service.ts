@@ -6,6 +6,8 @@ import {flatMap} from 'rxjs/operators';
 import {select, Store} from '@ngrx/store';
 import {State} from '../ngrx/reducers';
 import {Token} from '../domain/model/token';
+import {Role} from '../domain/model/role';
+import {PasswordRequest} from '../domain/model/password-request';
 
 export interface UserResponse {
   email: string;
@@ -15,7 +17,12 @@ export interface UserResponse {
   lastname: string;
   activate: boolean;
   avatarUrl: string;
-  roles: Array<string>;
+  roles: Array<RoleResponse>;
+}
+
+export interface RoleResponse {
+  id: string;
+  role: string;
 }
 
 
@@ -27,6 +34,7 @@ export class UserApiService {
   private token: Token;
 
   constructor(private http: HttpClient, private store: Store<State>) {
+    this.store.pipe(select(state => state.loginKey.token)).subscribe(value => this.token = value);
   }
 
   addAvatar(avatar: FileList): Observable<any> {
@@ -62,7 +70,7 @@ export class UserApiService {
       );
   }
 
-  updateUserEmail(user: User): Observable<User> {
+  updateUserEmail(user: User): Observable<any> {
     const url: string = '/api/v1/private/user';
     const options = {
       headers: new HttpHeaders({
@@ -73,16 +81,36 @@ export class UserApiService {
       id: user.id,
       email: user.email,
     };
-    return this.http.put(url, body, options)
-      .pipe(
-        flatMap((response: UserResponse) => {
-          // TODO maybe better to call fetchUser after updateUser
-          const userMapped: User = new User();
-          userMapped.id = response.id;
-          userMapped.email = response.email;
-          return of(userMapped);
-        }),
-      );
+    return this.http.put(url, body, options);
+  }
+
+  updateUserPassword(request: PasswordRequest): Observable<any> {
+    const url: string = '/api/v1/private/user/password';
+    const options = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + this.token.token,
+      }),
+    };
+    const body = {
+      newPassword: request.newPassword,
+      currentPassword: request.currentPassword,
+      confirmationPassword: request.confirmationPassword,
+    };
+    return this.http.put(url, body, options);
+  }
+
+  updateUserRoles(user: User): Observable<any> {
+    const url: string = '/api/v1/private/user';
+    const options = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + user.token,
+      }),
+    };
+    const body = {
+      id: user.id,
+      roles: user.roles,
+    };
+    return this.http.put(url, body, options);
   }
 
   fetchUser(token: Token): Observable<User> {
@@ -104,6 +132,14 @@ export class UserApiService {
           userMapped.token = token.token;
           userMapped.avatarUrl = response.avatarUrl;
           userMapped.name = response.firstname + ' ' + response.lastname;
+
+          response.roles.forEach(value => {
+            const role: Role = new Role();
+            role.id = value.id;
+            role.name = value.role;
+            userMapped.roles.push(role);
+          });
+
           return of(userMapped);
         }),
       );

@@ -28,6 +28,8 @@ import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {LoadUserEffects} from './ngrx/effects/load-user.effects';
 import {UpdateAvatarEffects} from './ngrx/effects/update-avatar.effects';
 import {UpdateEmailEffects} from './ngrx/effects/update-email.effects';
+import {UpdateRolesEffects} from './ngrx/effects/update-roles.effects';
+import {UpdatePasswordEffects} from './ngrx/effects/update-password.effects';
 
 @NgModule({
   declarations: [AppComponent],
@@ -61,7 +63,13 @@ import {UpdateEmailEffects} from './ngrx/effects/update-email.effects';
       name: 'Evergarden Admin Dashboard',
     }),
     EffectsModule.forRoot([AppEffects]),
-    EffectsModule.forFeature([LoadUserEffects, UpdateAvatarEffects, UpdateEmailEffects]),
+    EffectsModule.forFeature([
+      LoadUserEffects,
+      UpdateAvatarEffects,
+      UpdateEmailEffects,
+      UpdateRolesEffects,
+      UpdatePasswordEffects,
+    ]),
   ],
   bootstrap: [AppComponent],
 })
